@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Giphy API</title>
+    <style>
+        input {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gifsRoom"></div>
+    <form>
+        <label for="gif-input">GIF!</label>
+        <input id="gif-input"><br>
+
+        <input id="addGIF">
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        var gifs = []
+
+        function emptyRoom() {
+            $('#gifsRoom').empty();
+
+
+            for (var i = 0; i < gifs.length; i++) {
+                var g = $('<button>');
+                g.addClass('gif');
+                g.attr('data-name', gifs[i]);
+                g.text(gifs[i]);
+                $('#gifsRoom').append(g);
+            }
+        }
+
+        $('#addGIF').on('click', function(event) {
+            event.preventDefault();
+            var gif = $('#gif-input').val();
+            gifs.push(gif);
+            emptyRoom();
+        });
+
+        emptyRoom();
+    </script>
+</body>
+
+</html>
