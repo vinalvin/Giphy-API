@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Giphy API</title>
     <style>
-        input {
+        input,
+        button {
             margin: 10px;
         }
     </style>
@@ -19,28 +20,28 @@
         <label for="gif-input">GIF!</label>
         <input id="gif-input"><br>
 
-        <input id="addGIF">
+        <button id="addGIF">Add the gif</button>
     </form>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         var gifs = []
 
         function emptyRoom() {
-            $('#gifsRoom').empty();
+            $("#gifsRoom").empty();
 
 
             for (var i = 0; i < gifs.length; i++) {
-                var g = $('<button>');
-                g.addClass('gif');
-                g.attr('data-name', gifs[i]);
+                var g = $("<button>");
+                g.addClass("gif");
+                g.attr("data-name", gifs[i]);
                 g.text(gifs[i]);
-                $('#gifsRoom').append(g);
+                $("#gifsRoom").append(g);
             }
         }
 
-        $('#addGIF').on('click', function(event) {
+        $("#addGIF").on("click", function(event) {
             event.preventDefault();
-            var gif = $('#gif-input').val();
+            var gif = $("#gif-input").val().trim();
             gifs.push(gif);
             emptyRoom();
         });
