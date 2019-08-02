@@ -15,41 +15,95 @@
 </head>
 
 <body>
-    <div id="gifsRoom"></div>
-    <form>
-        <label for="gif-input">GIF!</label>
-        <input id="gif-input"><br>
+    <div id="foodsRoom">
+        <div>The Foods</div>
+        <div class="button-view"></div>
+        <form>
+            <label for="foodsAdd">GIF!</label>
+            <input class="foodAdd" type="text"><br>
+            <input class="addFoods">
+        </form>
+        <div id="foodsGifs"></div>
+    </div>
 
-        <button id="addGIF">Add the gif</button>
-    </form>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
     <script>
-        var apikey = "o02JSxsYArKvhaspGwVBybaOJiD1WAr4";
-        var queryURL = "api.giphy.com/v1/gifs/search" + gifs + apikey;
+        // var apikey = "o02JSxsYArKvhaspGwVBybaOJiD1WAr4";
+        // var queryURL = "api.giphy.com/v1/gifs/search" + foods + apikey;
 
-        var gifs = []
+        var foods = ["noodle", "sushi"]
 
-        function emptyRoom() {
-            $("#gifsRoom").empty();
+        function renderButtons() {
+            $(".button-view").empty();
 
-
-            for (var i = 0; i < gifs.length; i++) {
-                var g = $("<button>");
-                g.addClass("gif");
-                g.attr("data-name", gifs[i]);
-                g.text(gifs[i]);
-                $("#gifsRoom").append(g);
+            for (var i = 0; i < foods.length; i++) {
+                var gB = $("<button>");
+                gB.addClass("food");
+                gB.attr("data-name", foods[i]);
+                gB.text(foods[i]);
+                $(".button-view").append(gB);
             }
         }
 
-        $("#addGIF").on("click", function(event) {
+        function renderImages(response) {
+            var sF = response;
+            console.log(response)
+
+            $("#foodsGifs").empty()
+            for (var i = 0; i < sF.data.length; i++) {
+                var rating = sF.data[i].rating;
+                var divTag = $("<div").addClass("item")
+                var pTag = $("<p>").text("Rating: " + rating)
+
+                var gifsFoods = $("<img>")
+                    .attr("src", sF.data[i].images.fixed_wideth.url)
+                    .attr("data-animate", sF.data[i].images.fixed_wideth.url)
+                    .attr("data-still", sF.data[i].images.fixed_wideth.url)
+                    .attr("data-isanimate", true)
+                    .addClass("gif")
+
+                divTag.append(gifsFoods, pTag)
+                $("#foodsGifs").append(divTag)
+            }
+        }
+
+        $(".addFoods").on("click", function() {
             event.preventDefault();
-            var gif = $("#gif-input").val().trim();
-            gifs.push(gif);
-            emptyRoom();
+
+            var bestFoods = $(".addFoods").val()
+            foods.push(bestFoods)
+            $(".addFoods").val("");
+
+            renderButtons();
+        })
+
+        $(document).on("click", ".food", function() {
+            var foodsName = $(this).attr("data-name")
+            console.log(foodsName)
+
+            var apikey = "o02JSxsYArKvhaspGwVBybaOJiD1WAr4";
+
+            var limitGif = 10
+            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + foodsName + apikey;
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function(response) {
+                renderImages(response)
+            })
         });
 
-        emptyRoom();
+        // $(document).on("click", ".gif", function(){
+        //     console.log(this);
+        //     var 
+        // })
+
+        renderButtons();
     </script>
 </body>
 
