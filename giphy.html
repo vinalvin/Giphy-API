@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div id="foodsRoom">
+    <div>
         <div>The Foods</div>
         <div class="button-view"></div>
         <form>
@@ -56,11 +56,14 @@
             $("#foodsGifs").empty()
             for (var i = 0; i < sF.data.length; i++) {
                 var rating = sF.data[i].rating;
-                var divTag = $("<div").addClass("item")
+                var divTag = $("<div>").addClass("item")
                 var pTag = $("<p>").text("Rating: " + rating)
 
                 var gifsFoods = $("<img>")
-                    .attr("src", sF.data[i].images.fixed_wideth.url)
+                    .attr("src", sF.data[i].images.fixed_width.url)
+                    .attr("data-animate", sF.data[i].images.fixed_width.url)
+                    .attr("data-still", sF.data[i].images.fixed_width_still.url)
+                    .attr("data-isanimate", true)
                     .addClass("gif")
 
                 divTag.append(gifsFoods, pTag)
@@ -80,12 +83,12 @@
 
         $(document).on("click", ".food", function() {
             var foodsName = $(this).attr("data-name")
-            console.log(foodsName)
+            console.log(foodsName);
 
-            var apikey = "o02JSxsYArKvhaspGwVBybaOJiD1WAr4";
+            var apikey = "&api_key=o02JSxsYArKvhaspGwVBybaOJiD1WAr4";
 
             var limitGif = 10
-            var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + foodsName + apikey;
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + foodsName + "&limit=" + limitGif + apikey;
 
             $.ajax({
                 url: queryURL,
